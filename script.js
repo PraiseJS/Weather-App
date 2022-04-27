@@ -2,7 +2,9 @@ let weather = {
     apiKey: "71e1f14a9be4780de169edb47cd43153",
     fetchWeather: function (city) {
         fetch(
-            "http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid=" + this.apiKey
+            "http://api.openweathermap.org/data/2.5/weather?q=" 
+            + city +"&units=metric&appid=" 
+            + this.apiKey
         )
             .then((response) => response.json())
             .then((data) => this.displayWeather(data));
@@ -20,6 +22,8 @@ let weather = {
       document.querySelector(".humidity").innerText = "humidity: " + humidity + "%";
       document.querySelector(".wind").innerText = 
         "windspeed: " + speed + " km/hr";
+      document.querySelector(".weather").classList.remove("loading");
+      document.body.style.backgroundImage = "url('https://source.unsplash.com/1600x900/?" + name + "')"  
     },
     search: function () {
         this.fetchWeather(document.querySelector(".search-bar").value);
@@ -31,8 +35,12 @@ document.querySelector(".search button")
   weather.search();
 });
 
-document.querySelector(".search-bar").addEventListener("keyup", function (event) {
+document
+  .querySelector(".search-bar")
+  .addEventListener("keyup", function (event) {
     if (event.key == "Enter") {
         weather.search();
     }
 });
+
+weather.fetchWeather("Nigeria");
